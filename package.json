@@ -1,0 +1,29 @@
+{
+  "name": "polymer-gh-issues",
+  "version": "1.0.0",
+  "description": "Example Polymer element for pulling GitHub issues via API with iron-ajax",
+  "main": "index.js",
+  "private": true,
+  "engines": {
+    "node": "4.4.5"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "monitor": "nodemon app.js",
+    "deploy": "gcloud preview app deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopaworks/polymer-gh-issues.git"
+  },
+  "author": "sskoopa",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/koopaworks/polymer-gh-issues/issues"
+  },
+  "homepage": "https://github.com/koopaworks/polymer-gh-issues#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
