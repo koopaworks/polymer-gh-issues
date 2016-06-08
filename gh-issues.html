@@ -12,11 +12,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 
 <!--
-An element for fetching GitHub issues.
+An element for fetching GitHub issues. Pulls from the
+<a href="https://developer.github.com/v3/issues/">GitHub Issues API</a>.
+
 
 Example:
 
-    <gh-issues></gh-issues>
+    <gh-issues owner="Polymerelements" 
+               repo="iron-ajax"
+               state="open"
+               page="1"></gh-issues>
 
 @demo demo/index.html
 @hero hero.svg
@@ -50,15 +55,28 @@ Example:
       is: 'gh-issues',
 
       properties: {
+        /**
+         * The GitHub owner or organization to pull issues from.
+         */
         owner: {
+          type: String,
           value: 'polymer',
           notify: true
         },
+        /**
+         * The GitHub repo to pull issues from.
+         */
         repo: {
+          type: String,
           value: 'polymer',
           notify: true
         },
+        /**
+         * (Optional) The state of issues to be pulled.  Defaults to open.
+         * Can be either open, closed, or all.
+         */
         state: {
+          type: String,
           value: 'open',
           notify: true
         },
@@ -77,7 +95,7 @@ Example:
         return ['https://api.github.com/repos', owner, repo, 'issues'].join('/');
       },
       _computeOptions: function(state, page) {
-        return {state: state, page: page}
+        return {state: state, page: page};
       }
     });
   </script>
