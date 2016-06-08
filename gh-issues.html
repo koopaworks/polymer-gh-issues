@@ -9,13 +9,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
 
 <!--
-An element providing a solution to no problem in particular.
+An element for fetching GitHub Issues by owner and repo.
 
 Example:
 
-    <gh-issues></gh-issues>
+    <gh-issues owner="Polymerelements" repo="iron-ajax"></gh-issues>
 
 @demo demo/index.html
 @hero hero.svg
@@ -28,23 +30,21 @@ Example:
         display: block;
         box-sizing: border-box;
       }
-
-      .author img {
-        display: block;
-        float: left;
-        margin-right: 5px;
-        max-height: 100px;
-        max-width: 100px;
-      }
     </style>
-
-    <h1>&lt;gh-issues&gt;</h1>
-    <content></content>
-    <p class="author">
-      <img src$="{{author.image}}">
-      Cheers,<br/>
-      <span class="name">{{author.name}}</span>
-    </p>
+    <iron-ajax
+      auto
+      url="{{url}}"
+      handle-as="json"
+      params="{{options}}"
+      last-repsonse="{{response}}"></iron-ajax>
+    <template is="dom-repeat" items="{{response}}">
+      <div>
+        <a target="_new" href="{{item.html_url}}">{{item.title}}</a>
+        <!--template is="dom-repeat" items="{{item.labels}}">
+          <span style="color: {{item.color}};">| {{item.name}}</span>
+        </template-->
+      </div>
+    </template>
   </template>
 
   <script>
@@ -53,92 +53,52 @@ Example:
 
       properties: {
         /**
-         * `fancy` indicates that the element should don a monocle and tophat,
-         * while checking its pocket watch.
-         */
-        fancy: Boolean,
-
-        /**
-         * Describes the author of the element, but is really just an excuse to
-         * show off JSDoc annotations.
+         * The github owner/organization of the repo we want issue from.
          *
-         * @type {{name: string, image: string}}
+         * @type String
          */
-        author: {
-          type: Object,
-          // Use `value` to provide a default value for a property, by setting it
-          // on your element's prototype.
-          //
-          // If you provide a function, as we do here, Polymer will call that
-          // _per element instance_.
-          //
-          // We do that to ensure that each element gets its own copy of the
-          // value, rather than having it shared across all instances (via the
-          // prototype).
-          value: function() {
-            return {
-              name:  'Dimitri Glazkov',
-              image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-            };
-          }
+        owner: {
+          type: String,
+          value: 'polymer',
+          notify: true
         },
+        /**
+         * The github repo we want issues for
+         * 
+         * @type String
+         */
+        repo: {
+          type: String,
+          value: 'polymer',
+          notify: true
+        },
+        /**
+         * The state of issues that we want (open, closed, etc).
+         * 
+         * @type String
+         */
+        state: {
+          value: 'open',
+          notify: true
+        },
+        page: {
+          value: 1,
+          notify: true
+        },
+        url: {
+          computed: '_computeUrl(owner, repo)'
+        },
+        options: {
+          computed: '_computeOptions(state, page)'
+        }
       },
-
-      // Element Lifecycle
-
-      ready: function() {
-        // `ready` is called after all elements have been configured, but
-        // propagates bottom-up. This element's children are ready, but parents
-        // are not.
-        //
-        // This is the point where you should make modifications to the DOM (when
-        // necessary), or kick off any processes the element wants to perform.
+      _computeUrl: function(owner, repo) {
+        var url =  ['https://api.github.com/repos', owner, repo, 'issues'].join('/');
+        console.log(url);
+        return url;
       },
-
-      attached: function() {
-        // `attached` fires once the element and its parents have been inserted
-        // into a document.
-        //
-        // This is a good place to perform any work related to your element's
-        // visual state or active behavior (measuring sizes, beginning animations,
-        // loading resources, etc).
-      },
-
-      detached: function() {
-        // The analog to `attached`, `detached` fires when the element has been
-        // removed from a document.
-        //
-        // Use this to clean up anything you did in `attached`.
-      },
-
-      // Element Behavior
-
-      /**
-       * Sometimes it's just nice to say hi.
-       *
-       * @param {string} greeting A positive greeting.
-       * @return {string} The full greeting.
-       */
-      sayHello: function(greeting) {
-        var response = greeting || 'Hello World!';
-        return 'gh-issues says, ' + response;
-      },
-
-      /**
-       * The `gh-issues-lasers` event is fired whenever `fireLasers` is called.
-       *
-       * @event gh-issues-lasers
-       * @detail {{sound: String}}
-       */
-
-      /**
-       * Attempt to destroy this element's enemies with a beam of light!
-       *
-       * Or, at least, dispatch an event in the vain hope that someone else will
-       * do the zapping.
-       */
-      fireLasers: function() {
-        this.fire('gh-issues-lasers', {sound: 'Pew pew!'});
+      _computeOptions: function(state, page) {
+        return {state: state, page: page};
       }
     });
   </script>

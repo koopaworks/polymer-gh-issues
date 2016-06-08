@@ -39,9 +39,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           myEl = fixture('gh-issues-fixture');
         });
 
-        test('defines the "author" property', function() {
-          assert.equal(myEl.author.name, 'Dimitri Glazkov');
-          assert.equal(myEl.author.image, 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg');
+        test('defines the "repo" property', function() {
+          assert.equal(myEl.repo, 'polymer');
+        });
+
+        test('issues are returned', function() {
+          var els = Polymer.dom(myEl.root).querySelector('a');
+          assert.equals(els.length, 20, '20 issues returned');
         });
 
         test('says hello', function() {
@@ -57,12 +61,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             done();
           });
           myEl.fireLasers();
-        });
-
-        test('distributed children', function() {
-          var els = myEl.getContentChildren();
-          assert.equal(els.length, 1, 'one distributed node');
-          assert.equal(els[0], myEl.querySelector('h2'), 'content distributed correctly');
         });
 
       });

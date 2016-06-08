@@ -17,32 +17,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../gh-issues.html">
   </head>
   <body unresolved>
-
-    <p>An example of <code>&lt;gh-issues&gt;</code>:</p>
-
-    <p>Make words! <button id="saybtn">Say Something</button></p>
-    <p>Make lasers! <button id="laserbtn">Fire lasers</button></p>
-
-    <gh-issues author='{"name": "Lord Meowser", "image": "http://lorempixel.com/g/300/200/cats/"}' fancy>
-      <h2>Hello gh-issues</h2>
-    </gh-issues>
-
-    <script>
-      var seedElement = document.querySelector('gh-issues');
-
-      document.querySelector('#saybtn').addEventListener('click', function() {
-        alert(seedElement.sayHello('Hallo!'));
-      });
-
-      document.querySelector('#laserbtn').addEventListener('click', function() {
-        seedElement.fireLasers();
-      });
-
-      document.addEventListener("gh-issues-lasers", function(e) {
-        console.log(e.detail.sound);
-      });
-
-    </script>
-
+    <template is="dom-bind">
+      <div>Owner:<input type="text" value="{{owner::change}}"></div>
+      <div>Repo:<input type="text" value="{{repo::change}}"></div>
+      <div>State:<input type="text" value="{{state::change}}"></div>
+      <div>Page:<input type="text" value="{{page::change}}"></div>
+      <gh-issues owner="{{owner}}" repo="{{repo}}" state="{{state}}" page="{{page}}"></gh-issues>
   </body>
 </html>

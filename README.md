@@ -59,3 +59,6 @@ Then, you can run your tests on _all_ of your local browsers via:
 ## Yeoman support
 
 If you'd like to use Yeoman to scaffold your element that's possible. The official [`generator-polymer`](https://github.com/yeoman/generator-polymer) generator has a [`seed`](https://github.com/yeoman/generator-polymer#seed) subgenerator.
+
+
+ bower install --save Polymerelements/iron-ajax
