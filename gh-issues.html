@@ -11,13 +11,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 
-
 <!--
-An element for fetching GitHub Issues by owner and repo.
+An element for fetching GitHub issues.
 
 Example:
 
-    <gh-issues owner="Polymerelements" repo="iron-ajax"></gh-issues>
+    <gh-issues></gh-issues>
 
 @demo demo/index.html
 @hero hero.svg
@@ -30,21 +29,20 @@ Example:
         display: block;
         box-sizing: border-box;
       }
-    </style>
-    <iron-ajax
-      auto
-      url="{{url}}"
-      handle-as="json"
-      params="{{options}}"
-      last-repsonse="{{response}}"></iron-ajax>
-    <template is="dom-repeat" items="{{response}}">
-      <div>
-        <a target="_new" href="{{item.html_url}}">{{item.title}}</a>
-        <!--template is="dom-repeat" items="{{item.labels}}">
-          <span style="color: {{item.color}};">| {{item.name}}</span>
-        </template-->
-      </div>
-    </template>
+     </style>
+     <iron-ajax
+       auto
+       url="{{url}}"
+       handle-as="json"
+       params="{{options}}"
+       last-response="{{response}}"></iron-ajax>
+       <template is="dom-repeat" items="{{response}}">
+         <div>
+           <a target="_new" href="{{item.html_url}}">{{item.title}}</a>
+           <template is="dom-repeat" items="{{item.labels}}">
+             <span style="color: {{item.color}};">| {{item.name}}</span>  
+           </template>
+       </template>
   </template>
 
   <script>
@@ -52,31 +50,14 @@ Example:
       is: 'gh-issues',
 
       properties: {
-        /**
-         * The github owner/organization of the repo we want issue from.
-         *
-         * @type String
-         */
         owner: {
-          type: String,
           value: 'polymer',
           notify: true
         },
-        /**
-         * The github repo we want issues for
-         * 
-         * @type String
-         */
         repo: {
-          type: String,
           value: 'polymer',
           notify: true
         },
-        /**
-         * The state of issues that we want (open, closed, etc).
-         * 
-         * @type String
-         */
         state: {
           value: 'open',
           notify: true
@@ -93,12 +74,10 @@ Example:
         }
       },
       _computeUrl: function(owner, repo) {
-        var url =  ['https://api.github.com/repos', owner, repo, 'issues'].join('/');
-        console.log(url);
-        return url;
+        return ['https://api.github.com/repos', owner, repo, 'issues'].join('/');
       },
       _computeOptions: function(state, page) {
-        return {state: state, page: page};
+        return {state: state, page: page}
       }
     });
   </script>
